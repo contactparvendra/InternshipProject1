@@ -1,0 +1,37 @@
+{% extends 'myapp/imagesbase.html' %}
+{% load static %}
+{% block title %} Products{% endblock %}
+{% block myhdg %} {% endblock %}
+{% block body_block %}
+    <h1>Add a new  Image</h1>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="hidden" name="actionType" value="add">
+            <input type="submit" value="Upload">
+        </form>
+    <br/>    <br/>
+    <h1>List of Images</h1>
+        <form method="POST" >
+            {% csrf_token %}
+            {{ searchForm.as_table }}
+            <input type="hidden" name="actionType" value="search">
+            <input type="submit" value="Search Images">
+        </form>
+    <br/>
+     {% for img in imglist %}
+            <div class="col-md-4">
+                 <div >   {{ img.label }}
+                <form method="POST" >
+                {% csrf_token %}
+                    <input type="hidden" name="actionType" value="delete">
+                <input type="hidden" name="id" value="{{ img.id }}">
+                <input type="submit" value="Delete">
+            </form>
+                 </div>
+                     <img src="{{ img.file.url }}" class="img-responsive" style="width: 100%; float: left; margin-right: 10px;" />
+
+            </div>
+    {% endfor %}
+
+{% endblock %}
